@@ -1,5 +1,6 @@
 // backend/src/controllers/auth.controller.ts
 import { Request, Response } from 'express'
+import { AuthRequest } from '../middleware/auth.middleware'
 import bcrypt from 'bcryptjs'
 import { prisma } from '../lib/prisma'
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt'
@@ -62,7 +63,7 @@ export async function refresh(req: Request, res: Response) {
   }
 }
 
-export async function me(req: any, res: Response) {
+export async function me(req: AuthRequest, res: Response) {
   const user = await prisma.user.findUnique({
     where: { id: req.user.id },
     select: { id: true, name: true, email: true, role: true, createdAt: true },

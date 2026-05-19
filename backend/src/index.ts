@@ -73,7 +73,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
-    message: 'EstatePro API is running',
+    message: 'JerryHomes API is running',
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   })
@@ -92,7 +92,8 @@ app.use(errorHandler)
 
 // ─── Start Server ─────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🚀 EstatePro API running on http://localhost:${PORT}`)
+  console.log(`
+🚀 JerryHomes API running on http://localhost:${PORT}`)
   console.log(`📖 Environment: ${process.env.NODE_ENV ?? 'development'}`)
   console.log(`🔒 CORS allowed: ${allowedOrigins.join(', ')}\n`)
 })

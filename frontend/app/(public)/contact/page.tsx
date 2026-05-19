@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with EstatePro for all your rental property needs in Abuja.',
+  description: 'Get in touch with JerryHomes for all your rental property needs in Abuja.',
 }
 
 export default function ContactPage() {
