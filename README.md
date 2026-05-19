@@ -312,4 +312,5 @@ Zero backend changes needed.
 - Admin seed credentials loaded from `.env` — never hardcoded
 - Soft deletes — no permanent data loss
 #   e s t a t e r e n t a l s  
+ #   e s t a t e r e n t a l s  
  
