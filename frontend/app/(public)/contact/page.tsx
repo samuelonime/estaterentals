@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with EstatePro for all your rental property needs in Abuja.',
+  description: 'Get in touch with JerryHomes for all your rental property needs in Abuja.',
 }
 
 export default function ContactPage() {
@@ -27,7 +27,7 @@ export default function ContactPage() {
               {[
                 { icon: MapPin, title: 'Office', value: '123 Wuse II, Central Business District, Abuja' },
                 { icon: Phone, title: 'Phone', value: '+234 801 234 5678' },
-                { icon: Mail, title: 'Email', value: 'info@estatepro.com' },
+                { icon: Mail, title: 'Email', value: 'info@jerryhomes.com' },
                 { icon: Clock, title: 'Hours', value: 'Mon–Fri 8am–6pm | Sat 9am–4pm' },
               ].map(({ icon: Icon, title, value }) => (
                 <div key={title} className="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">

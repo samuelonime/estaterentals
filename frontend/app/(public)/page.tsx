@@ -6,7 +6,7 @@ import { CTASection } from '@/components/property/CTASection'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'EstatePro — Premium Rental Properties in Abuja',
+  title: 'JerryHomes — Premium Rental Properties in Abuja',
   description: "Find premium rental apartments, houses, duplexes and penthouses across Abuja's finest neighbourhoods.",
 }
 

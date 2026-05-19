@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode, JSX } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { getCurrentUser, logout, type AuthUser } from '@/lib/auth'
 
 interface AuthContextType {
@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType>({
   refetch: async () => {},
 })
 
-export function AuthProvider({ children }: { children: ReactNode }): JSX.Element {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -30,10 +30,11 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const handleLogout = async () => {
     await logout()
     setUser(null)
+    // Optionally redirect or clear other state
   }
 
-  useEffect(() => {
-    fetchUser()
+  useEffect(() => { 
+    fetchUser() 
   }, [])
 
   return (

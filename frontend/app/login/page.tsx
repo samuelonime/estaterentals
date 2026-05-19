@@ -66,7 +66,7 @@ export default function LoginPage() {
                 <input
                   {...register('email')}
                   type="email"
-                  placeholder="admin@estatepro.com"
+                  placeholder="admin@jerryhomes.com"
                   className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/50 transition text-sm"
                 />
               </div>
@@ -113,7 +113,7 @@ export default function LoginPage() {
         <div className="mt-4 p-4 bg-slate-900/50 border border-slate-800/30 rounded-2xl text-center">
           <p className="text-slate-500 text-xs">
             <span className="text-slate-400 font-medium">Demo: </span>
-            admin@estatepro.com / Admin@123456
+            admin@jerryhomes.com / Admin@123456
           </p>
         </div>
       </div>
