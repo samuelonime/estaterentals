@@ -40,12 +40,13 @@ export function Navbar() {
     )}>
       <div className="container-max section-padding">
         <nav className="flex items-center justify-between h-16 md:h-20" aria-label="Main navigation">
-          {/* JerryHomes Logo */}
-          <Link href="/" className="flex items-center group" aria-label="JerryHomes – go to homepage">
+
+          {/* JerryHomes logo */}
+          <Link href="/" aria-label="JerryHomes — go to homepage" className="flex items-center">
             <Image
               src="/logo.svg"
               alt="JerryHomes"
-              width={160}
+              width={158}
               height={38}
               priority
               className={cn(
@@ -55,10 +56,13 @@ export function Navbar() {
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1" role="menubar">
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} role="menuitem"
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={pathname === link.href ? 'page' : undefined}
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === link.href
@@ -67,7 +71,6 @@ export function Navbar() {
                       ? 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                       : 'text-white/90 hover:text-white hover:bg-white/10'
                 )}
-                aria-current={pathname === link.href ? 'page' : undefined}
               >{link.label}</Link>
             ))}
           </div>
@@ -77,12 +80,18 @@ export function Navbar() {
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                className={cn('p-2 rounded-lg transition-colors', solid ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' : 'text-white/80 hover:text-white hover:bg-white/10')}
+                className={cn(
+                  'p-2 rounded-lg transition-colors',
+                  solid
+                    ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                )}
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             )}
-            <Link href="/dashboard"
+            <Link
+              href="/dashboard"
               className={cn(
                 'hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
                 solid
@@ -103,21 +112,27 @@ export function Navbar() {
         </nav>
       </div>
 
+      {/* Mobile menu */}
       {mobileOpen && (
         <div id="mobile-menu" className="md:hidden bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 shadow-xl">
           <div className="container-max section-padding py-4 space-y-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                aria-current={pathname === link.href ? 'page' : undefined}
                 className={cn(
                   'flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors',
                   pathname === link.href
                     ? 'bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900'
                 )}
-                aria-current={pathname === link.href ? 'page' : undefined}
               >{link.label}</Link>
             ))}
-            <Link href="/dashboard" onClick={() => setMobileOpen(false)}
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors"
             >Admin Dashboard →</Link>
           </div>

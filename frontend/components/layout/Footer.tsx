@@ -7,26 +7,29 @@ export function Footer() {
     <footer className="bg-slate-950 text-slate-400" aria-label="Site footer">
       <div className="container-max section-padding py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          {/* Brand column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center mb-4" aria-label="JerryHomes homepage">
+            <Link href="/" aria-label="JerryHomes homepage" className="inline-flex mb-4">
               <Image
                 src="/logo.svg"
                 alt="JerryHomes"
-                width={160}
+                width={158}
                 height={38}
                 className="h-9 w-auto brightness-0 invert opacity-90"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-              Abuja&apos;s premier real estate rental agency. Connecting discerning tenants with exceptional properties across the city&apos;s finest neighbourhoods.
+              Abuja&apos;s premier real estate rental agency. Connecting discerning tenants
+              with exceptional properties across the city&apos;s finest neighbourhoods.
             </p>
             <div className="flex items-center gap-3 mt-5">
               {[
-                { Icon: Instagram, label: 'Instagram' },
-                { Icon: Twitter, label: 'Twitter / X' },
-                { Icon: Facebook, label: 'Facebook' },
+                { Icon: Instagram, label: 'JerryHomes on Instagram' },
+                { Icon: Twitter,   label: 'JerryHomes on X / Twitter' },
+                { Icon: Facebook,  label: 'JerryHomes on Facebook' },
               ].map(({ Icon, label }) => (
-                <a key={label} href="#" aria-label={`JerryHomes on ${label}`}
+                <a key={label} href="#" aria-label={label}
                   className="w-9 h-9 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all duration-200 text-slate-400"
                 >
                   <Icon className="w-4 h-4" />
@@ -35,15 +38,16 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Quick links */}
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
             <ul className="space-y-2.5">
               {[
-                { href: '/', label: 'Home' },
-                { href: '/properties', label: 'All Properties' },
+                { href: '/',                          label: 'Home' },
+                { href: '/properties',                label: 'All Properties' },
                 { href: '/properties?type=APARTMENT', label: 'Apartments' },
-                { href: '/properties?type=DUPLEX', label: 'Duplexes' },
-                { href: '/contact', label: 'Contact Us' },
+                { href: '/properties?type=DUPLEX',    label: 'Duplexes' },
+                { href: '/contact',                   label: 'Contact Us' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-slate-400 hover:text-orange-400 text-sm transition-colors">
@@ -54,6 +58,7 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
             <address className="not-italic space-y-3">

@@ -30,11 +30,7 @@ export const metadata: Metadata = {
     title: 'JerryHomes — Premium Rentals in Abuja',
     description: 'Discover premium rental properties in Abuja.',
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
