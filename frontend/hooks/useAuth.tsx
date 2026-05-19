@@ -27,11 +27,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false)
   }
 
-  useEffect(() => { fetchUser() }, [])
+  const handleLogout = async () => {
+    await logout()
+    setUser(null)
+    // Optionally redirect or clear other state
+  }
+
+  useEffect(() => { 
+    fetchUser() 
+  }, [])
 
   return (
-    // @ts-ignore — simple context pattern
-    <AuthContext.Provider value={{ user, loading, logout, refetch: fetchUser }}>
+    <AuthContext.Provider value={{ user, loading, logout: handleLogout, refetch: fetchUser }}>
       {children}
     </AuthContext.Provider>
   )
