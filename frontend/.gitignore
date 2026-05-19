@@ -6,3 +6,4 @@ out/
 .DS_Store
 *.pem
 .vercel
+.env.example
