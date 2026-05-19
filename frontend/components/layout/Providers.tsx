@@ -3,7 +3,7 @@
 import { ThemeProvider } from 'next-themes'
 import { AuthProvider } from '@/hooks/useAuth'
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <AuthProvider>

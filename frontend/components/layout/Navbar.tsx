@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Menu, X, Building2, Moon, Sun } from 'lucide-react'
+import { Menu, X, Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +25,7 @@ export function Navbar() {
   useEffect(() => {
     setMounted(true)
     const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -38,21 +39,30 @@ export function Navbar() {
         : 'bg-transparent'
     )}>
       <div className="container-max section-padding">
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow">
-              <Building2 className="w-5 h-5 text-white" />
-            </div>
-            <span className={cn('font-display text-xl font-bold transition-colors', solid ? 'text-slate-900 dark:text-white' : 'text-white')}>
-              Estate<span className="text-orange-500">Pro</span>
-            </span>
+        <nav className="flex items-center justify-between h-16 md:h-20" aria-label="Main navigation">
+
+          {/* JerryHomes logo */}
+          <Link href="/" aria-label="JerryHomes — go to homepage" className="flex items-center">
+            <Image
+              src="/logo.svg"
+              alt="JerryHomes"
+              width={158}
+              height={38}
+              priority
+              className={cn(
+                'h-9 w-auto transition-all duration-300',
+                solid ? 'brightness-100' : 'brightness-0 invert'
+              )}
+            />
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={pathname === link.href ? 'page' : undefined}
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === link.href
@@ -69,12 +79,19 @@ export function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className={cn('p-2 rounded-lg transition-colors', solid ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' : 'text-white/80 hover:text-white hover:bg-white/10')}
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                className={cn(
+                  'p-2 rounded-lg transition-colors',
+                  solid
+                    ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                )}
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             )}
-            <Link href="/dashboard"
+            <Link
+              href="/dashboard"
               className={cn(
                 'hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
                 solid
@@ -84,6 +101,9 @@ export function Navbar() {
             >Admin</Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               className={cn('md:hidden p-2 rounded-lg', solid ? 'text-slate-700 dark:text-slate-300' : 'text-white')}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -92,11 +112,16 @@ export function Navbar() {
         </nav>
       </div>
 
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 shadow-xl">
+        <div id="mobile-menu" className="md:hidden bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 shadow-xl">
           <div className="container-max section-padding py-4 space-y-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                aria-current={pathname === link.href ? 'page' : undefined}
                 className={cn(
                   'flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors',
                   pathname === link.href
@@ -105,7 +130,9 @@ export function Navbar() {
                 )}
               >{link.label}</Link>
             ))}
-            <Link href="/dashboard" onClick={() => setMobileOpen(false)}
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors"
             >Admin Dashboard →</Link>
           </div>
