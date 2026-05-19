@@ -1,0 +1,135 @@
+// backend/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("users")
+}
+
+model Property {
+  id          String          @id @default(cuid())
+  title       String
+  slug        String          @unique
+  description String
+  price       Decimal         @db.Decimal(12, 2)
+  priceUnit   PriceUnit       @default(MONTH)
+  location    String
+  city        String
+  state       String
+  address     String
+  latitude    Float?
+  longitude   Float?
+  type        PropertyType
+  status      PropertyStatus  @default(ACTIVE)
+  bedrooms    Int             @default(0)
+  bathrooms   Int             @default(0)
+  area        Float?
+  areaUnit    String          @default("sqm")
+  featured    Boolean         @default(false)
+  images      PropertyImage[]
+  amenities   Amenity[]
+  viewCount   Int             @default(0)
+  deletedAt   DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([city])
+  @@index([type])
+  @@index([status])
+  @@index([featured])
+  @@index([price])
+  @@index([deletedAt])
+  @@map("properties")
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String
+  publicId   String
+  alt        String?
+  order      Int      @default(0)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+  @@map("property_images")
+}
+
+model Amenity {
+  id         String   @id @default(cuid())
+  name       String
+  icon       String?
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@map("amenities")
+}
+
+model Message {
+  id         String        @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  subject    String
+  body       String
+  propertyId String?
+  status     MessageStatus @default(UNREAD)
+  deletedAt  DateTime?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([status])
+  @@index([deletedAt])
+  @@map("messages")
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  STUDIO
+  DUPLEX
+  PENTHOUSE
+  COMMERCIAL
+  LAND
+}
+
+enum PropertyStatus {
+  ACTIVE
+  INACTIVE
+  RENTED
+}
+
+enum PriceUnit {
+  MONTH
+  YEAR
+  WEEK
+  DAY
+}
+
+enum MessageStatus {
+  READ
+  UNREAD
+}

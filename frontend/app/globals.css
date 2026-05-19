@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+  h1, h2, h3, h4, h5, h6 { @apply font-display; }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-playfair), serif; }
+  .font-body { font-family: var(--font-dm-sans), sans-serif; }
+  .section-padding { @apply px-4 sm:px-6 lg:px-8; }
+  .container-max { @apply max-w-7xl mx-auto; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { @apply bg-slate-100 dark:bg-slate-900; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-700 rounded-full; }
+::-webkit-scrollbar-thumb:hover { background: #ec6a21; }
+
+.admin-sidebar-link {
+  @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200;
+}
+.admin-sidebar-link.active {
+  @apply bg-orange-500 text-white shadow-lg;
+}
+.admin-sidebar-link:not(.active) {
+  @apply text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white;
+}
