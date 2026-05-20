@@ -78,7 +78,7 @@ export default function AdminPropertiesPage() {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <p className="text-slate-500 dark:text-slate-400 text-sm">{pagination.total} properties total</p>
-        <Link href="/admin/admin/dashboard/properties/new"
+        <Link href="/admin/dashboard/properties/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" /> Add Property
@@ -125,7 +125,7 @@ export default function AdminPropertiesPage() {
           </div>
           <h3 className="font-display font-semibold text-slate-900 dark:text-white mb-2">No properties found</h3>
           <p className="text-slate-400 text-sm mb-5">Get started by adding your first property.</p>
-          <Link href="/admin/admin/dashboard/properties/new"
+          <Link href="/admin/dashboard/properties/new"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white rounded-xl text-sm font-medium hover:bg-orange-600 transition-colors"
           >Add Property</Link>
         </div>
@@ -182,7 +182,7 @@ export default function AdminPropertiesPage() {
                         <Link href={`/properties/${p.slug}`} target="_blank"
                           className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-all"
                         ><ExternalLink className="w-4 h-4" /></Link>
-                        <Link href={`/admin/admin/dashboard/properties/${p.id}/edit`}
+                        <Link href={`/admin/dashboard/properties/${p.id}/edit`}
                           className="p-2 text-slate-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/30 rounded-lg transition-all"
                         ><Edit2 className="w-4 h-4" /></Link>
                         <button onClick={() => setDeleteId(p.id)}
