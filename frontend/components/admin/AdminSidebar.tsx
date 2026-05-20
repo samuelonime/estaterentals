@@ -2,23 +2,24 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Building2, LayoutDashboard, Home, MessageSquare, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Building2, LayoutDashboard, Home, MessageSquare, ExternalLink, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
 import { cn, getInitials } from '@/lib/utils'
 
 interface AdminSidebarProps {
   user: { name?: string | null; email?: string | null; role: string }
+  basePath?: string  // '/dashboard' (legacy) or '/admin/dashboard' (new portal)
 }
 
-const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/properties', icon: Home, label: 'Properties' },
-  { href: '/dashboard/messages', icon: MessageSquare, label: 'Messages' },
-]
-
-export function AdminSidebar({ user }: AdminSidebarProps) {
+export function AdminSidebar({ user, basePath = '/admin/dashboard' }: AdminSidebarProps) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+
+  const navItems = [
+    { href: basePath, icon: LayoutDashboard, label: 'Dashboard' },
+    { href: `${basePath}/properties`, icon: Home, label: 'Properties' },
+    { href: `${basePath}/messages`, icon: MessageSquare, label: 'Messages' },
+  ]
 
   return (
     <aside className={cn(
@@ -36,10 +37,20 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         )}
       </div>
 
+      {/* Admin badge */}
+      {!collapsed && (
+        <div className="mx-3 mt-3 px-3 py-2 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-center gap-2">
+          <ShieldCheck className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+          <span className="text-orange-400 text-xs font-medium">
+            {user.role === 'SUPER_ADMIN' ? 'Super Admin Portal' : 'Admin Portal'}
+          </span>
+        </div>
+      )}
+
       <nav className="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
         {!collapsed && <p className="text-slate-600 text-xs font-medium uppercase tracking-wider px-3 mb-3">Main Menu</p>}
         {navItems.map(({ href, icon: Icon, label }) => {
-          const isActive = href === '/dashboard' ? pathname === href : pathname.startsWith(href)
+          const isActive = href === basePath ? pathname === href : pathname.startsWith(href)
           return (
             <Link key={href} href={href}
               className={cn('admin-sidebar-link', isActive && 'active')}

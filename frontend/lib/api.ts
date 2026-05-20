@@ -55,6 +55,12 @@ export const authApi = {
   me: () => api.get('/auth/me'),
   refresh: (refreshToken: string) =>
     api.post('/auth/refresh', { refreshToken }),
+  googleAuth: (idToken: string) =>
+    api.post('/auth/google', { idToken }),
+  visitorLogin: (email: string, password: string) =>
+    api.post('/auth/visitor/login', { email, password }),
+  visitorRegister: (name: string, email: string, password: string) =>
+    api.post('/auth/visitor/register', { name, email, password }),
 }
 
 // ─── Properties ───────────────────────────────────────

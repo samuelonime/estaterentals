@@ -80,7 +80,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} JerryHomes. All rights reserved.</p>
-          <p>Built with Next.js · Express · PostgreSQL · Cloudinary</p>
+          <p>Developed by Meritlives</p>
         </div>
       </div>
     </footer>

@@ -12,13 +12,16 @@ model User {
   id        String   @id @default(cuid())
   name      String?
   email     String   @unique
-  password  String
-  role      Role     @default(ADMIN)
+  password  String?
+  role      Role     @default(VISITOR)
   image     String?
+  googleId  String?  @unique
+  provider  String?  @default("local") // "local" | "google"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([email])
+  @@index([googleId])
   @@map("users")
 }
 
@@ -102,6 +105,7 @@ model Message {
 }
 
 enum Role {
+  VISITOR
   ADMIN
   SUPER_ADMIN
 }

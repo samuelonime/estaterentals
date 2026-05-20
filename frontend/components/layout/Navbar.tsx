@@ -4,9 +4,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Menu, X, Moon, Sun } from 'lucide-react'
+import { Menu, X, Moon, Sun, LogOut, User } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
+import { logout } from '@/lib/auth'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -20,6 +22,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const { user } = useAuth()
   const isHome = pathname === '/'
 
   useEffect(() => {
@@ -90,15 +93,43 @@ export function Navbar() {
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             )}
-            <Link
-              href="/dashboard"
-              className={cn(
-                'hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
-                solid
-                  ? 'border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950'
-                  : 'border-white/40 text-white hover:bg-white/10'
-              )}
-            >Admin</Link>
+            {user ? (
+              <div className="hidden md:flex items-center gap-2">
+                <div className={cn(
+                  'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium',
+                  solid ? 'text-slate-700 dark:text-slate-300' : 'text-white/90'
+                )}>
+                  {user.image ? (
+                    <img src={user.image} alt={user.name ?? 'User'} className="w-7 h-7 rounded-full object-cover border-2 border-orange-500/40" />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center">
+                      <User className="w-4 h-4 text-orange-500" />
+                    </div>
+                  )}
+                  <span className="max-w-[100px] truncate">{user.name ?? user.email}</span>
+                </div>
+                <button
+                  onClick={logout}
+                  className={cn(
+                    'p-2 rounded-lg transition-colors',
+                    solid ? 'text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30' : 'text-white/70 hover:text-white hover:bg-white/10'
+                  )}
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/signin"
+                className={cn(
+                  'hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
+                  solid
+                    ? 'border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950'
+                    : 'border-white/40 text-white hover:bg-white/10'
+                )}
+              >Sign In</Link>
+            )}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
@@ -131,10 +162,10 @@ export function Navbar() {
               >{link.label}</Link>
             ))}
             <Link
-              href="/dashboard"
+              href="/signin"
               onClick={() => setMobileOpen(false)}
               className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors"
-            >Admin Dashboard →</Link>
+            >Sign In →</Link>
           </div>
         </div>
       )}

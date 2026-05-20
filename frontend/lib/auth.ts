@@ -7,8 +7,10 @@ export interface AuthUser {
   name?: string | null
   email: string
   role: string
+  image?: string | null
 }
 
+// ─── Admin Login ───────────────────────────────────────
 export async function login(email: string, password: string): Promise<AuthUser> {
   const res = await authApi.login(email, password)
   const { accessToken, refreshToken, user } = res.data.data
@@ -19,10 +21,50 @@ export async function login(email: string, password: string): Promise<AuthUser> 
   return user
 }
 
+// ─── Visitor Login ─────────────────────────────────────
+export async function visitorLogin(email: string, password: string): Promise<AuthUser> {
+  const res = await authApi.visitorLogin(email, password)
+  const { accessToken, refreshToken, user } = res.data.data
+
+  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
+  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
+
+  return user
+}
+
+// ─── Visitor Register ──────────────────────────────────
+export async function visitorRegister(name: string, email: string, password: string): Promise<AuthUser> {
+  const res = await authApi.visitorRegister(name, email, password)
+  const { accessToken, refreshToken, user } = res.data.data
+
+  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
+  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
+
+  return user
+}
+
+// ─── Google Sign-In ────────────────────────────────────
+export async function googleSignIn(idToken: string): Promise<AuthUser> {
+  const res = await authApi.googleAuth(idToken)
+  const { accessToken, refreshToken, user } = res.data.data
+
+  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
+  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
+
+  return user
+}
+
+// ─── Logout ────────────────────────────────────────────
 export function logout() {
   Cookies.remove('accessToken')
   Cookies.remove('refreshToken')
-  window.location.href = '/login'
+  window.location.href = '/'
+}
+
+export function adminLogout() {
+  Cookies.remove('accessToken')
+  Cookies.remove('refreshToken')
+  window.location.href = '/admin/login'
 }
 
 export function getAccessToken(): string | undefined {

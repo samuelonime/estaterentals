@@ -5,24 +5,26 @@ import { LogOut, Moon, Sun, Menu } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-
-const pageTitles: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/dashboard/properties': 'Properties',
-  '/dashboard/properties/new': 'Add Property',
-  '/dashboard/messages': 'Messages',
-}
+import { adminLogout } from '@/lib/auth'
 
 interface AdminTopbarProps {
   user: { name?: string | null; email?: string | null }
+  basePath?: string
 }
 
-export function AdminTopbar({ user }: AdminTopbarProps) {
+export function AdminTopbar({ user, basePath = '/admin' }: AdminTopbarProps) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
-  const { logout } = useAuth()
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
+
+  const dashPath = `${basePath}/dashboard`
+  const pageTitles: Record<string, string> = {
+    [dashPath]: 'Dashboard',
+    [`${dashPath}/properties`]: 'Properties',
+    [`${dashPath}/properties/new`]: 'Add Property',
+    [`${dashPath}/messages`]: 'Messages',
+  }
 
   const title = pageTitles[pathname] ?? (pathname.includes('/edit') ? 'Edit Property' : 'Admin Panel')
 
@@ -48,7 +50,7 @@ export function AdminTopbar({ user }: AdminTopbarProps) {
           </button>
         )}
         <button
-          onClick={logout}
+          onClick={adminLogout}
           className="flex items-center gap-2 px-3 py-2 text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg text-sm font-medium transition-all"
         >
           <LogOut className="w-4 h-4" />
