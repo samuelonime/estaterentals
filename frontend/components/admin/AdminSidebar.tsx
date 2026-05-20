@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Building2, LayoutDashboard, Home, MessageSquare, ExternalLink, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react'
+import { LayoutDashboard, Home, MessageSquare, ExternalLink, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react'
 import { useState } from 'react'
 import { cn, getInitials } from '@/lib/utils'
 
@@ -27,12 +27,14 @@ export function AdminSidebar({ user, basePath = '/admin/dashboard' }: AdminSideb
       collapsed ? 'w-16' : 'w-64'
     )}>
       <div className="flex items-center gap-3 px-4 h-16 border-b border-slate-800/50 shrink-0">
-        <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/30">
-          <Building2 className="w-4 h-4 text-white" />
+        <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/30">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
+          </svg>
         </div>
         {!collapsed && (
-          <span className="font-display font-bold text-lg text-white">
-            Estate<span className="text-orange-500">Pro</span>
+          <span className="font-bold text-lg text-white tracking-tight">
+            Jerry<span className="text-orange-500">Homes</span>
           </span>
         )}
       </div>

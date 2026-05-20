@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoginSchema, type LoginFormData } from '@/lib/validations'
 import { login } from '@/lib/auth'
 import { useAuth } from '@/hooks/useAuth'
-import { Building2, Lock, Mail, Eye, EyeOff, AlertCircle, ShieldCheck } from 'lucide-react'
+import { Lock, Mail, Eye, EyeOff, AlertCircle, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminLoginPage() {
@@ -56,10 +56,12 @@ export default function AdminLoginPage() {
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
               <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                <Building2 className="w-6 h-6 text-white" />
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
+                </svg>
               </div>
-              <span className="font-display text-2xl font-bold text-white">
-                Estate<span className="text-orange-500">Pro</span>
+              <span className="font-bold text-2xl text-white tracking-tight">
+                Jerry<span className="text-orange-500">Homes</span>
               </span>
             </Link>
             <h1 className="font-display text-2xl font-bold text-white mb-2">Admin Sign In</h1>

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Menu, X, Moon, Sun, LogOut, User } from 'lucide-react'
@@ -45,18 +44,18 @@ export function Navbar() {
         <nav className="flex items-center justify-between h-16 md:h-20" aria-label="Main navigation">
 
           {/* JerryHomes logo */}
-          <Link href="/" aria-label="JerryHomes — go to homepage" className="flex items-center">
-            <Image
-              src="/logo.svg"
-              alt="JerryHomes"
-              width={158}
-              height={38}
-              priority
-              className={cn(
-                'h-9 w-auto transition-all duration-300',
-                solid ? 'brightness-100' : 'brightness-0 invert'
-              )}
-            />
+          <Link href="/" aria-label="JerryHomes — go to homepage" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center shadow-md shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
+              </svg>
+            </div>
+            <span className={cn(
+              'font-bold text-xl tracking-tight transition-colors duration-300',
+              solid ? 'text-slate-900 dark:text-white' : 'text-white'
+            )}>
+              Jerry<span className="text-orange-500">Homes</span>
+            </span>
           </Link>
 
           {/* Desktop links */}

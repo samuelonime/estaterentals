@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { visitorLogin, visitorRegister, googleSignIn } from '@/lib/auth'
-import { Building2, Mail, Lock, User, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 
 declare global {
@@ -134,10 +134,12 @@ export default function SignInPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
             <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Building2 className="w-6 h-6 text-white" />
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
+              </svg>
             </div>
-            <span className="font-display text-2xl font-bold text-slate-900 dark:text-white">
-              Estate<span className="text-orange-500">Pro</span>
+            <span className="font-bold text-2xl text-slate-900 dark:text-white tracking-tight">
+              Jerry<span className="text-orange-500">Homes</span>
             </span>
           </Link>
           <p className="text-slate-500 dark:text-slate-400 text-sm">
