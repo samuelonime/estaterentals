@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with JerryHomes for all your rental property needs in Abuja.',
+  description: 'Get in touch with JerryHomes for all your property rental and sales needs in Abuja.',
 }
 
 export default function ContactPage() {
@@ -15,7 +15,7 @@ export default function ContactPage() {
         <div className="container-max section-padding text-center">
           <p className="text-orange-400 text-sm font-medium uppercase tracking-widest mb-3">Get In Touch</p>
           <h1 className="font-display text-3xl md:text-5xl font-bold text-white mb-4">Contact Us</h1>
-          <p className="text-slate-400 max-w-xl mx-auto">Have questions? Our team is ready to help you find your perfect home.</p>
+          <p className="text-slate-400 max-w-xl mx-auto">Have questions about renting or buying? Our team is ready to help you find your perfect property.</p>
         </div>
       </div>
 
@@ -25,7 +25,7 @@ export default function ContactPage() {
             <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-8">How to Reach Us</h2>
             <div className="space-y-4 mb-10">
               {[
-                { icon: MapPin, title: 'Office', value: '123 Wuse II, Central Business District, Abuja' },
+                { icon: MapPin, title: 'Office', value: 'Plot 239 P.O.W. Mafemi Cres, behind Chida Event Centre, Utako, Abuja 900108, FCT' },
                 { icon: Phone, title: 'Phone', value: '+234 801 234 5678' },
                 { icon: Mail, title: 'Email', value: 'info@jerryhomes.com' },
                 { icon: Clock, title: 'Hours', value: 'Mon–Fri 8am–6pm | Sat 9am–4pm' },
@@ -43,7 +43,7 @@ export default function ContactPage() {
             </div>
             <div className="rounded-2xl overflow-hidden h-56 bg-slate-100 dark:bg-slate-900">
               <iframe
-                src="https://maps.google.com/maps?q=Wuse+II,+Abuja,+Nigeria&output=embed"
+                src="https://maps.google.com/maps?q=Plot+239+POW+Mafemi+Crescent+Utako+Abuja+Nigeria&output=embed"
                 className="w-full h-full border-0"
                 loading="lazy"
                 title="Office Location"

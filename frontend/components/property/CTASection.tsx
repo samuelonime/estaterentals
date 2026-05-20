@@ -11,12 +11,15 @@ export function CTASection() {
           Find Your Dream Home Today
         </h2>
         <p className="text-orange-100 text-lg max-w-xl mx-auto mb-10">
-          Browse curated rental properties across Abuja's finest neighbourhoods. Your perfect home is just a click away.
+          Browse curated properties for <strong>rent or sale</strong> across Abuja&apos;s finest neighbourhoods. Your perfect home is just a click away.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/properties"
+          <Link href="/properties?listingType=RENT"
             className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-xl hover:bg-orange-50 transition-all shadow-xl hover:-translate-y-0.5"
           >Browse Rentals</Link>
+          <Link href="/properties?listingType=SALE"
+            className="px-8 py-4 bg-orange-900/60 border-2 border-white/40 text-white font-semibold rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm"
+          >Browse For Sale</Link>
           <Link href="/contact"
             className="px-8 py-4 border-2 border-white/40 text-white font-semibold rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm"
           >Contact an Agent</Link>

@@ -20,8 +20,8 @@ export function Footer() {
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-              Abuja&apos;s premier real estate rental agency. Connecting discerning tenants
-              with exceptional properties across the city&apos;s finest neighbourhoods.
+              Abuja&apos;s premier real estate agency. Connecting discerning clients
+              with exceptional properties for rent and sale across the city&apos;s finest neighbourhoods.
             </p>
             <div className="flex items-center gap-3 mt-5">
               {[
@@ -43,11 +43,13 @@ export function Footer() {
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
             <ul className="space-y-2.5">
               {[
-                { href: '/',                          label: 'Home' },
-                { href: '/properties',                label: 'All Properties' },
-                { href: '/properties?type=APARTMENT', label: 'Apartments' },
-                { href: '/properties?type=DUPLEX',    label: 'Duplexes' },
-                { href: '/contact',                   label: 'Contact Us' },
+                { href: '/',                                         label: 'Home' },
+                { href: '/properties',                               label: 'All Properties' },
+                { href: '/properties?listingType=RENT',              label: 'For Rent' },
+                { href: '/properties?listingType=SALE',              label: 'For Sale' },
+                { href: '/properties?type=APARTMENT',                label: 'Apartments' },
+                { href: '/properties?type=DUPLEX',                   label: 'Duplexes' },
+                { href: '/contact',                                   label: 'Contact Us' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-slate-400 hover:text-orange-400 text-sm transition-colors">
@@ -64,7 +66,7 @@ export function Footer() {
             <address className="not-italic space-y-3">
               <div className="flex items-start gap-3 text-sm">
                 <MapPin className="w-4 h-4 mt-0.5 text-orange-500 shrink-0" aria-hidden="true" />
-                <span>123 Wuse II, Central Business District, Abuja, FCT</span>
+                <span>Plot 239 P.O.W. Mafemi Cres, behind Chida Event Centre, Utako, Abuja 900108, Federal Capital Territory</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Phone className="w-4 h-4 text-orange-500 shrink-0" aria-hidden="true" />
