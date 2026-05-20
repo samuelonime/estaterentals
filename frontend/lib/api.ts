@@ -35,12 +35,13 @@ api.interceptors.response.use(
           original.headers.Authorization = `Bearer ${accessToken}`
           return api(original)
         } catch {
+          // Refresh failed — clear tokens and let the page handle it
           Cookies.remove('accessToken')
           Cookies.remove('refreshToken')
-          if (typeof window !== 'undefined') window.location.href = '/login'
         }
       } else {
-        if (typeof window !== 'undefined') window.location.href = '/login'
+        // No refresh token — clear access token and let the page handle it
+        Cookies.remove('accessToken')
       }
     }
 
