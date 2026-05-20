@@ -26,8 +26,8 @@ export default function ContactPage() {
             <div className="space-y-4 mb-10">
               {[
                 { icon: MapPin, title: 'Office', value: 'Plot 239 P.O.W. Mafemi Cres, behind Chida Event Centre, Utako, Abuja 900108, FCT' },
-                { icon: Phone, title: 'Phone', value: '+234 801 234 5678' },
-                { icon: Mail, title: 'Email', value: 'info@jerryhomes.com' },
+                { icon: Phone, title: 'Phone', value: '+2349026784812, +2347064688383' },
+                { icon: Mail, title: 'Email', value: 'jerryhomesandestatedv@gmail.com' },
                 { icon: Clock, title: 'Hours', value: 'Mon–Fri 8am–6pm | Sat 9am–4pm' },
               ].map(({ icon: Icon, title, value }) => (
                 <div key={title} className="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
