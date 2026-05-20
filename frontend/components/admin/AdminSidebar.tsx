@@ -26,16 +26,22 @@ export function AdminSidebar({ user, basePath = '/admin/dashboard' }: AdminSideb
       'hidden lg:flex flex-col bg-slate-950 text-white transition-all duration-300 border-r border-slate-800/50 shrink-0',
       collapsed ? 'w-16' : 'w-64'
     )}>
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-slate-800/50 shrink-0">
-        <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/30">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
-          </svg>
-        </div>
-        {!collapsed && (
-          <span className="font-bold text-lg text-white tracking-tight">
-            Jerry<span className="text-orange-500">Homes</span>
-          </span>
+      <div className="flex items-center px-4 h-16 border-b border-slate-800/50 shrink-0">
+        {collapsed ? (
+          // Show just the house icon when collapsed
+          <div className="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/30">
+            <svg width="18" height="18" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="24,4 44,22 4,22" fill="white"/>
+              <rect x="8" y="22" width="32" height="20" rx="1" fill="white" opacity="0.9"/>
+              <rect x="20" y="30" width="8" height="12" rx="3" fill="#f97316"/>
+            </svg>
+          </div>
+        ) : (
+          <img
+            src="/logo.svg"
+            alt="JerryHomes"
+            className="h-10 w-auto"
+          />
         )}
       </div>
 
