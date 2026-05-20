@@ -16,7 +16,7 @@ export function Footer() {
                 alt="JerryHomes"
                 width={158}
                 height={38}
-                className="h-9 w-auto brightness-0 invert opacity-90"
+                className="h-10 w-auto transition-all duration-300"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
