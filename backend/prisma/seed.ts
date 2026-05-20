@@ -30,7 +30,7 @@ async function main() {
       role: 'ADMIN',
     },
   })
-  console.log('✅ Admin created:', admin.email)
+  console.log('✅ Admin upserted:', admin.email)
 
   const properties = [
     {
@@ -49,18 +49,14 @@ async function main() {
       bathrooms: 3,
       area: 220,
       featured: true,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', publicId: 'seed_1a', alt: 'Living Room', order: 0 },
-          { url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80', publicId: 'seed_1b', alt: 'Bedroom', order: 1 },
-        ],
-      },
-      amenities: {
-        create: [
-          { name: '24/7 Security' }, { name: 'Swimming Pool' }, { name: 'Gym' },
-          { name: 'Parking' }, { name: 'Generator' }, { name: 'WiFi' },
-        ],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80', publicId: 'seed_1a', alt: 'Living Room', order: 0 },
+        { url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80', publicId: 'seed_1b', alt: 'Bedroom', order: 1 },
+      ],
+      amenities: [
+        { name: '24/7 Security' }, { name: 'Swimming Pool' }, { name: 'Gym' },
+        { name: 'Parking' }, { name: 'Generator' }, { name: 'WiFi' },
+      ],
     },
     {
       title: 'Modern 4-Bedroom Duplex in Asokoro',
@@ -78,17 +74,13 @@ async function main() {
       bathrooms: 4,
       area: 380,
       featured: true,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', publicId: 'seed_2a', alt: 'Exterior', order: 0 },
-        ],
-      },
-      amenities: {
-        create: [
-          { name: 'Private Garden' }, { name: 'Boys Quarters' }, { name: '3-Car Garage' },
-          { name: 'Smart Home' }, { name: 'Solar Power' }, { name: 'CCTV' },
-        ],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80', publicId: 'seed_2a', alt: 'Exterior', order: 0 },
+      ],
+      amenities: [
+        { name: 'Private Garden' }, { name: 'Boys Quarters' }, { name: '3-Car Garage' },
+        { name: 'Smart Home' }, { name: 'Solar Power' }, { name: 'CCTV' },
+      ],
     },
     {
       title: 'Executive Studio in Wuse II',
@@ -106,14 +98,10 @@ async function main() {
       bathrooms: 1,
       area: 55,
       featured: false,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80', publicId: 'seed_3a', alt: 'Studio', order: 0 },
-        ],
-      },
-      amenities: {
-        create: [{ name: 'All Utilities' }, { name: 'Concierge' }, { name: 'WiFi' }],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80', publicId: 'seed_3a', alt: 'Studio', order: 0 },
+      ],
+      amenities: [{ name: 'All Utilities' }, { name: 'Concierge' }, { name: 'WiFi' }],
     },
     {
       title: 'Spacious 5-Bedroom House in Gwarinpa',
@@ -131,14 +119,10 @@ async function main() {
       bathrooms: 5,
       area: 500,
       featured: true,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&q=80', publicId: 'seed_4a', alt: 'House', order: 0 },
-        ],
-      },
-      amenities: {
-        create: [{ name: 'Large Compound' }, { name: 'Servant Quarters' }, { name: 'Borehole' }],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&q=80', publicId: 'seed_4a', alt: 'House', order: 0 },
+      ],
+      amenities: [{ name: 'Large Compound' }, { name: 'Servant Quarters' }, { name: 'Borehole' }],
     },
     {
       title: 'Premium Penthouse in CBD',
@@ -156,14 +140,10 @@ async function main() {
       bathrooms: 5,
       area: 650,
       featured: true,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80', publicId: 'seed_5a', alt: 'Penthouse', order: 0 },
-        ],
-      },
-      amenities: {
-        create: [{ name: 'Private Rooftop' }, { name: 'Butler Service' }, { name: 'Private Elevator' }],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80', publicId: 'seed_5a', alt: 'Penthouse', order: 0 },
+      ],
+      amenities: [{ name: 'Private Rooftop' }, { name: 'Butler Service' }, { name: 'Private Elevator' }],
     },
     {
       title: '2-Bedroom Apartment in Garki',
@@ -181,51 +161,66 @@ async function main() {
       bathrooms: 2,
       area: 110,
       featured: false,
-      images: {
-        create: [
-          { url: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=1200&q=80', publicId: 'seed_6a', alt: 'Apartment', order: 0 },
-        ],
-      },
-      amenities: {
-        create: [{ name: 'Security' }, { name: 'Parking' }, { name: 'Generator' }],
-      },
+      images: [
+        { url: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=1200&q=80', publicId: 'seed_6a', alt: 'Apartment', order: 0 },
+      ],
+      amenities: [{ name: 'Security' }, { name: 'Parking' }, { name: 'Generator' }],
     },
   ]
 
-  for (const property of properties) {
-    const p = await prisma.property.create({ data: property as any })
+  for (const { images, amenities, ...propertyData } of properties) {
+    // Skip if slug already exists — safe to re-run on every deploy
+    const existing = await prisma.property.findUnique({ where: { slug: propertyData.slug } })
+    if (existing) {
+      console.log(`⏭️  Already exists, skipping: ${propertyData.title}`)
+      continue
+    }
+
+    const p = await prisma.property.create({
+      data: {
+        ...propertyData,
+        images: { create: images },
+        amenities: { create: amenities },
+      },
+    })
     console.log(`✅ Property: ${p.title}`)
   }
 
-  await prisma.message.createMany({
-    data: [
-      {
-        name: 'Emeka Okafor',
-        email: 'emeka@gmail.com',
-        phone: '+2348034567890',
-        subject: 'Enquiry about Maitama Apartment',
-        body: 'Hello, I am interested in the 3-bedroom apartment in Maitama. Please send availability details.',
-        status: 'UNREAD',
-      },
-      {
-        name: 'Amina Ibrahim',
-        email: 'amina@yahoo.com',
-        phone: '+2348067890123',
-        subject: 'Asokoro Duplex Viewing',
-        body: 'I would like to schedule a viewing for the Asokoro duplex. Available weekdays after 4pm.',
-        status: 'READ',
-      },
-      {
-        name: 'David Mensah',
-        email: 'd.mensah@company.com',
-        subject: 'Corporate Accommodation',
-        body: 'Seeking serviced apartments for visiting executives. Monthly rental basis.',
-        status: 'UNREAD',
-      },
-    ],
-  })
+  // Only seed messages if the table is empty
+  const messageCount = await prisma.message.count()
+  if (messageCount === 0) {
+    await prisma.message.createMany({
+      data: [
+        {
+          name: 'Emeka Okafor',
+          email: 'emeka@gmail.com',
+          phone: '+2348034567890',
+          subject: 'Enquiry about Maitama Apartment',
+          body: 'Hello, I am interested in the 3-bedroom apartment in Maitama. Please send availability details.',
+          status: 'UNREAD',
+        },
+        {
+          name: 'Amina Ibrahim',
+          email: 'amina@yahoo.com',
+          phone: '+2348067890123',
+          subject: 'Asokoro Duplex Viewing',
+          body: 'I would like to schedule a viewing for the Asokoro duplex. Available weekdays after 4pm.',
+          status: 'READ',
+        },
+        {
+          name: 'David Mensah',
+          email: 'd.mensah@company.com',
+          subject: 'Corporate Accommodation',
+          body: 'Seeking serviced apartments for visiting executives. Monthly rental basis.',
+          status: 'UNREAD',
+        },
+      ],
+    })
+    console.log('✅ Messages seeded')
+  } else {
+    console.log(`⏭️  Messages already exist (${messageCount}), skipping`)
+  }
 
-  console.log('✅ Messages seeded')
   console.log('\n🎉 Seed complete!')
   console.log(`📧 Admin: ${adminEmail}`)
   console.log('🔑 Password: (as set in SEED_ADMIN_PASSWORD)')
