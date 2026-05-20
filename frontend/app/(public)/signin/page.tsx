@@ -25,11 +25,9 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
-  // Sign in state
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
 
-  // Sign up state
   const [signUpName, setSignUpName] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpPassword, setSignUpPassword] = useState('')
@@ -132,12 +130,12 @@ export default function SignInPage() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
-            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
-              </svg>
-            </div>
+          <Link href="/" className="inline-flex flex-col items-center gap-1 mb-4">
+            <img
+              src="/logo.svg"
+              alt="JerryHomes"
+              className="h-16 w-auto dark:drop-shadow-[0_0_8px_rgba(249,115,22,0.3)]"
+            />
             <span className="font-bold text-2xl text-slate-900 dark:text-white tracking-tight">
               Jerry<span className="text-orange-500">Homes</span>
             </span>

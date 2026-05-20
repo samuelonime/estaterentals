@@ -54,13 +54,13 @@ export default function AdminLoginPage() {
 
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 shadow-2xl">
           <div className="text-center mb-8">
-            <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
-              <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="white"/>
-                </svg>
-              </div>
-              <span className="font-bold text-2xl text-white tracking-tight">
+            <Link href="/" className="inline-flex flex-col items-center gap-1 mb-6">
+              <img
+                src="/logo.svg"
+                alt="JerryHomes"
+                className="h-16 w-auto"
+              />
+              <span className="font-bold text-xl text-white tracking-tight">
                 Jerry<span className="text-orange-500">Homes</span>
               </span>
             </Link>
