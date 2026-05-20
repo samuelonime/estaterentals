@@ -9,9 +9,11 @@ import Image from 'next/image'
 import { propertyApi, uploadApi } from '@/lib/api'
 import {
   Upload, X, Plus, CheckCircle, AlertCircle,
-  Loader2, ImagePlus, Copy, ExternalLink, Check,
+  Loader2, ImagePlus, Copy, ExternalLink,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+const MAX_IMAGES = 5
 
 const PROPERTY_TYPES = ['APARTMENT','HOUSE','STUDIO','DUPLEX','PENTHOUSE','COMMERCIAL','LAND']
 const PRICE_UNITS = ['MONTH','YEAR','WEEK','DAY']
@@ -30,67 +32,6 @@ interface UploadedImage {
   url: string
   publicId: string
   alt?: string
-}
-
-function ImageLinkRow({ img, index, onRemove }: { img: UploadedImage; index: number; onRemove: () => void }) {
-  const [copied, setCopied] = useState(false)
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(img.url)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  return (
-    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl">
-      {/* Thumbnail */}
-      <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-700">
-        <Image src={img.url} alt={img.alt ?? `Image ${index + 1}`} fill className="object-cover" sizes="56px" />
-        {index === 0 && (
-          <span className="absolute bottom-0 left-0 right-0 text-center text-white text-[9px] font-semibold bg-orange-500 py-0.5">
-            COVER
-          </span>
-        )}
-      </div>
-
-      {/* URL */}
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-0.5">
-          Image {index + 1} {index === 0 ? '(Cover)' : ''}
-        </p>
-        <p className="text-xs text-slate-400 truncate font-mono">{img.url}</p>
-      </div>
-
-      {/* Actions */}
-      <div className="flex items-center gap-1.5 shrink-0">
-        <button
-          type="button"
-          onClick={copyLink}
-          title="Copy link"
-          className="p-1.5 text-slate-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/30 rounded-lg transition-all"
-        >
-          {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-        </button>
-        <a
-          href={img.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Open link"
-          className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-all"
-        >
-          <ExternalLink className="w-4 h-4" />
-        </a>
-        <button
-          type="button"
-          onClick={onRemove}
-          title="Remove image"
-          className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
-  )
 }
 
 export function PropertyForm({ property }: { property?: any }) {
@@ -132,12 +73,14 @@ export function PropertyForm({ property }: { property?: any }) {
   })
 
   const uploadImages = async (files: FileList) => {
+    const remaining = MAX_IMAGES - images.length
+    if (remaining <= 0) return
+    const toUpload = Array.from(files).slice(0, remaining)
     setUploading(true)
-    const names = Array.from(files).map((f) => f.name)
-    setUploadProgress(names)
+    setUploadProgress(toUpload.map((f) => f.name))
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
+    for (let i = 0; i < toUpload.length; i++) {
+      const file = toUpload[i]
       const fd = new FormData()
       fd.append('file', file)
       try {
@@ -154,6 +97,7 @@ export function PropertyForm({ property }: { property?: any }) {
 
     setUploading(false)
     setUploadProgress([])
+    if (fileRef.current) fileRef.current.value = ''
   }
 
   const removeImage = (index: number) => {
@@ -197,24 +141,19 @@ export function PropertyForm({ property }: { property?: any }) {
         <p className="text-slate-500 dark:text-slate-400 mb-6">
           Your listing is live and accessible at the link below.
         </p>
-
-        {/* Public Listing Link */}
         <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 mb-6 text-left">
           <ExternalLink className="w-4 h-4 text-orange-500 shrink-0" />
           <span className="flex-1 text-sm font-mono text-slate-600 dark:text-slate-400 truncate">
             {publicUrl}
           </span>
           <button
-            onClick={async () => {
-              await navigator.clipboard.writeText(publicUrl)
-            }}
+            onClick={async () => { await navigator.clipboard.writeText(publicUrl) }}
             className="p-1.5 text-slate-400 hover:text-orange-500 rounded-lg transition-colors shrink-0"
             title="Copy link"
           >
             <Copy className="w-4 h-4" />
           </button>
         </div>
-
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href={publicUrl}
@@ -226,7 +165,7 @@ export function PropertyForm({ property }: { property?: any }) {
             View Listing
           </a>
           <button
-            onClick={() => router.push('/dashboard/properties')}
+            onClick={() => router.push('/admin/dashboard/properties')}
             className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             Back to Properties
@@ -250,37 +189,96 @@ export function PropertyForm({ property }: { property?: any }) {
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-6">
         <h2 className="font-display font-semibold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
           <ImagePlus className="w-5 h-5 text-orange-500" />
-          Property Images
+          Property Photos
         </h2>
-        <p className="text-slate-400 text-xs mb-5">
-          Each uploaded image gets a shareable Cloudinary link you can copy or open directly.
+        <p className="text-slate-400 text-xs mb-4">
+          Upload up to 5 photos so buyers and renters can view the property from different angles.
         </p>
 
-        {/* Upload Drop Zone */}
+        {/* Counter */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-xs text-slate-400">
+            <span className={cn('font-bold text-sm', images.length >= MAX_IMAGES ? 'text-orange-500' : 'text-slate-700 dark:text-slate-200')}>
+              {images.length}
+            </span>
+            {' '}/ {MAX_IMAGES} photos uploaded
+          </p>
+          {images.length >= MAX_IMAGES && (
+            <span className="text-xs font-medium text-orange-500 bg-orange-50 dark:bg-orange-950/30 px-2.5 py-1 rounded-lg">
+              Maximum reached
+            </span>
+          )}
+        </div>
+
+        {/* Visual Grid — always show 5 slots */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-5">
+          {images.map((img, i) => (
+            <div key={img.publicId} className="relative group aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-transparent hover:border-orange-400 transition-all">
+              <Image src={img.url} alt={img.alt ?? `View ${i + 1}`} fill className="object-cover" sizes="160px" />
+              {i === 0 && (
+                <span className="absolute top-1.5 left-1.5 text-[9px] font-bold bg-orange-500 text-white px-1.5 py-0.5 rounded-md">
+                  COVER
+                </span>
+              )}
+              <span className="absolute top-1.5 right-1.5 text-[10px] font-semibold bg-black/50 text-white px-1.5 py-0.5 rounded-md">
+                View {i + 1}
+              </span>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() => removeImage(i)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+          {/* Empty slots */}
+          {Array.from({ length: MAX_IMAGES - images.length }).map((_, i) => (
+            <div
+              key={`empty-${i}`}
+              onClick={() => !uploading && images.length < MAX_IMAGES && fileRef.current?.click()}
+              className="aspect-square rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center gap-1 text-slate-300 dark:text-slate-600 cursor-pointer hover:border-orange-400 hover:text-orange-400 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              <span className="text-[10px] font-medium">Add</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Upload Button */}
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          disabled={uploading}
+          disabled={uploading || images.length >= MAX_IMAGES}
           className={cn(
-            'w-full border-2 border-dashed rounded-2xl py-8 flex flex-col items-center gap-3 transition-all mb-5',
-            uploading
-              ? 'opacity-50 cursor-not-allowed border-slate-300 dark:border-slate-700'
+            'w-full border-2 border-dashed rounded-2xl py-7 flex flex-col items-center gap-3 transition-all',
+            uploading || images.length >= MAX_IMAGES
+              ? 'opacity-40 cursor-not-allowed border-slate-300 dark:border-slate-700'
               : 'cursor-pointer border-slate-200 dark:border-slate-700 hover:border-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/10 hover:text-orange-500 text-slate-400'
           )}
         >
           {uploading ? (
             <>
-              <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+              <Loader2 className="w-7 h-7 animate-spin text-orange-500" />
               <span className="text-sm font-medium text-orange-500">
                 Uploading {uploadProgress[0] ?? '...'}
               </span>
             </>
+          ) : images.length >= MAX_IMAGES ? (
+            <>
+              <CheckCircle className="w-7 h-7 text-green-500" />
+              <p className="text-sm font-medium text-green-600 dark:text-green-400">All 5 views uploaded</p>
+            </>
           ) : (
             <>
-              <Upload className="w-8 h-8" />
+              <Upload className="w-7 h-7" />
               <div className="text-center">
-                <p className="text-sm font-medium">Click to upload images</p>
-                <p className="text-xs mt-1">JPG, PNG, WebP — max 10MB each — up to 10 files</p>
+                <p className="text-sm font-medium">Click to upload property photos</p>
+                <p className="text-xs mt-1">
+                  JPG, PNG, WebP · max 10MB each · {MAX_IMAGES - images.length} slot{MAX_IMAGES - images.length !== 1 ? 's' : ''} remaining
+                </p>
               </div>
             </>
           )}
@@ -293,23 +291,6 @@ export function PropertyForm({ property }: { property?: any }) {
           className="hidden"
           onChange={(e) => e.target.files && uploadImages(e.target.files)}
         />
-
-        {/* Uploaded Images with Links */}
-        {images.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
-              Uploaded Images ({images.length})
-            </p>
-            {images.map((img, i) => (
-              <ImageLinkRow
-                key={img.publicId}
-                img={img}
-                index={i}
-                onRemove={() => removeImage(i)}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
       {/* ── Basic Info ──────────────────────────────────── */}
@@ -481,7 +462,7 @@ export function PropertyForm({ property }: { property?: any }) {
         </button>
         <button
           type="button"
-          onClick={() => router.push('/dashboard/properties')}
+          onClick={() => router.push('/admin/dashboard/properties')}
           className="px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
         >
           Cancel
