@@ -21,7 +21,8 @@ const cspDirectives = [
   "font-src 'self' data:",
   [
     "connect-src 'self'",
-    process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000',
+    // Strip /api path — CSP connect-src needs the origin only, not a path prefix
+    (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000').replace(/\/api$/, ''),
     "https://accounts.google.com",
     "https://oauth2.googleapis.com",
   ].join(' '),
