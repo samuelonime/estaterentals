@@ -19,12 +19,19 @@ const COOKIE_OPTIONS: Cookies.CookieAttributes = {
   secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
 }
 
-const ACCESS_OPTS: Cookies.CookieAttributes  = { ...COOKIE_OPTIONS, expires: 7 }
-const REFRESH_OPTS: Cookies.CookieAttributes = { ...COOKIE_OPTIONS, expires: 30 }
+// Visitor: 7 days access, 30 days refresh
+const VISITOR_ACCESS_OPTS: Cookies.CookieAttributes  = { ...COOKIE_OPTIONS, expires: 1 / 24 }
+const VISITOR_REFRESH_OPTS: Cookies.CookieAttributes = { ...COOKIE_OPTIONS, expires: 8/ 24 }
 
-function setTokens(accessToken: string, refreshToken: string) {
-  Cookies.set('accessToken', accessToken, ACCESS_OPTS)
-  Cookies.set('refreshToken', refreshToken, REFRESH_OPTS)
+// Admin: 1 hour access, 8 hours refresh — shorter window for security
+const ADMIN_ACCESS_OPTS: Cookies.CookieAttributes  = { ...COOKIE_OPTIONS, expires: 1 / 24 }
+const ADMIN_REFRESH_OPTS: Cookies.CookieAttributes = { ...COOKIE_OPTIONS, expires: 8 / 24 }
+
+function setTokens(accessToken: string, refreshToken: string, isAdmin = false) {
+  const accessOpts  = isAdmin ? ADMIN_ACCESS_OPTS  : VISITOR_ACCESS_OPTS
+  const refreshOpts = isAdmin ? ADMIN_REFRESH_OPTS : VISITOR_REFRESH_OPTS
+  Cookies.set('accessToken', accessToken, accessOpts)
+  Cookies.set('refreshToken', refreshToken, refreshOpts)
 }
 
 function clearTokens() {
@@ -36,7 +43,7 @@ function clearTokens() {
 export async function login(email: string, password: string): Promise<AuthUser> {
   const res = await authApi.login(email, password)
   const { accessToken, refreshToken, user } = res.data.data
-  setTokens(accessToken, refreshToken)
+  setTokens(accessToken, refreshToken, true) // admin — 1hr session
   return user
 }
 
