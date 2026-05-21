@@ -146,7 +146,11 @@ export async function visitorRegister(req: Request, res: Response) {
 
   const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } })
   if (existing) {
-    return res.status(409).json({ success: false, error: 'An account with this email already exists' })
+    // Generic message — do NOT reveal whether the email is registered (prevents enumeration)
+    return res.status(409).json({
+      success: false,
+      error: 'Unable to create account with these details. Try signing in instead, or use a different email.',
+    })
   }
 
   const hashedPassword = await bcrypt.hash(password, 12)

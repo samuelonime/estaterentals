@@ -51,14 +51,15 @@ export const MessagePatchSchema = z.object({
 })
 
 export const PropertyFilterSchema = z.object({
-  search: z.string().optional(),
-  city: z.string().optional(),
+  // Limit search string to 100 chars to prevent full-table-scan DoS
+  search: z.string().max(100).optional(),
+  city: z.string().max(100).optional(),
   type: z.string().optional(),
-  minPrice: z.coerce.number().optional(),
-  maxPrice: z.coerce.number().optional(),
-  bedrooms: z.coerce.number().optional(),
+  minPrice: z.coerce.number().nonnegative().optional(),
+  maxPrice: z.coerce.number().nonnegative().optional(),
+  bedrooms: z.coerce.number().min(0).max(20).optional(),
   featured: z.coerce.boolean().optional(),
   status: z.string().optional(),
-  page: z.coerce.number().default(1),
-  limit: z.coerce.number().default(9),
+  page: z.coerce.number().min(1).max(1000).default(1),
+  limit: z.coerce.number().min(1).max(50).default(9),
 })
