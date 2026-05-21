@@ -129,8 +129,7 @@ export default function AdminLoginPage() {
 
         <div className="mt-4 p-4 bg-slate-900/50 border border-slate-800/30 rounded-2xl text-center">
           <p className="text-slate-500 text-xs">
-            <span className="text-slate-400 font-medium">Demo: </span>
-            admin@jerryhomes.com / Admin@123456
+            
           </p>
         </div>
       </div>
