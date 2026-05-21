@@ -3,47 +3,34 @@
 const isProd = process.env.NODE_ENV === 'production'
 
 // ─── Content Security Policy ──────────────────────────
-// Allowlist exactly what your site needs, block everything else.
-const cspDirectives = {
-  'default-src':  ["'self'"],
-  'script-src':   [
-    "'self'",
-    // Google Sign-In GSI script
-    'https://accounts.google.com',
-    // Next.js inline scripts need unsafe-inline in dev; in prod use nonces ideally
-    // For now allowing unsafe-inline only in dev to keep things working
-    isProd ? '' : "'unsafe-inline'",
-  ].filter(Boolean),
-  'style-src':    ["'self'", "'unsafe-inline'"], // Tailwind needs inline styles
-  'img-src':      [
-    "'self'",
-    'data:',
-    'blob:',
-    'https://res.cloudinary.com',   // property images
-    'https://images.unsplash.com',  // seed images
-    'https://lh3.googleusercontent.com', // Google profile pictures
-  ],
-  'font-src':     ["'self'", 'data:'],
-  'connect-src':  [
-    "'self'",
+// Next.js injects inline scripts for hydration — 'unsafe-inline' is required
+// unless you implement nonce-based CSP (which requires a custom server).
+// 'unsafe-inline' is still far better than having no CSP at all, as it
+// still blocks scripts from unauthorized external domains.
+const cspDirectives = [
+  "default-src 'self'",
+  // 'unsafe-inline' needed for Next.js hydration scripts + Tailwind inline styles
+  "script-src 'self' 'unsafe-inline' https://accounts.google.com",
+  "style-src 'self' 'unsafe-inline'",
+  [
+    "img-src 'self' data: blob:",
+    "https://res.cloudinary.com",
+    "https://images.unsplash.com",
+    "https://lh3.googleusercontent.com",
+  ].join(' '),
+  "font-src 'self' data:",
+  [
+    "connect-src 'self'",
     process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000',
-    'https://accounts.google.com',
-    'https://oauth2.googleapis.com',
-  ],
-  'frame-src':    ["'none'"],
-  'object-src':   ["'none'"],
-  'base-uri':     ["'self'"],
-  'form-action':  ["'self'"],
-  'upgrade-insecure-requests': isProd ? [''] : [],
-}
-
-const cspHeader = Object.entries(cspDirectives)
-  .filter(([, values]) => values.length > 0 && values.some(v => v !== ''))
-  .map(([directive, values]) => {
-    const val = values.filter(Boolean).join(' ')
-    return val ? `${directive} ${val}` : directive
-  })
-  .join('; ')
+    "https://accounts.google.com",
+    "https://oauth2.googleapis.com",
+  ].join(' '),
+  "frame-src 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  ...(isProd ? ["upgrade-insecure-requests"] : []),
+].join('; ')
 
 const nextConfig = {
   images: {
@@ -61,18 +48,12 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: [
-          // ── CSP (most important) ───────────────────────
-          {
-            key: 'Content-Security-Policy',
-            value: cspHeader,
-          },
-          // ── Standard security headers ──────────────────
-          { key: 'X-Content-Type-Options',  value: 'nosniff' },
-          { key: 'X-Frame-Options',          value: 'DENY' },
-          { key: 'X-XSS-Protection',         value: '1; mode=block' },
-          { key: 'Referrer-Policy',           value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy',        value: 'camera=(), microphone=(), geolocation=()' },
-          // ── HSTS: force HTTPS for 1 year in production ─
+          { key: 'Content-Security-Policy',   value: cspDirectives },
+          { key: 'X-Content-Type-Options',     value: 'nosniff' },
+          { key: 'X-Frame-Options',            value: 'DENY' },
+          { key: 'X-XSS-Protection',           value: '1; mode=block' },
+          { key: 'Referrer-Policy',            value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy',         value: 'camera=(), microphone=(), geolocation=()' },
           ...(isProd ? [{
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
