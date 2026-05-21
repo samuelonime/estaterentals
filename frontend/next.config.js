@@ -26,7 +26,7 @@ const cspDirectives = [
     "https://accounts.google.com",
     "https://oauth2.googleapis.com",
   ].join(' '),
-  "frame-src 'none'",
+  "frame-src https://maps.google.com https://www.google.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
