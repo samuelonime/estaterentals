@@ -126,12 +126,6 @@ export default function AdminLoginPage() {
             </Link>
           </p>
         </div>
-
-        <div className="mt-4 p-4 bg-slate-900/50 border border-slate-800/30 rounded-2xl text-center">
-          <p className="text-slate-500 text-xs">
-            
-          </p>
-        </div>
       </div>
     </div>
   )
