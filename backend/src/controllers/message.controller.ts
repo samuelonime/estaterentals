@@ -6,9 +6,9 @@ import { paginate, buildResponse } from '../utils/helpers'
 import { z } from 'zod'
 
 const MessageFilterSchema = z.object({
-  status: z.string().optional(),
-  page: z.coerce.number().default(1),
-  limit: z.coerce.number().default(15),
+  status: z.enum(['READ', 'UNREAD']).optional(), // only valid statuses
+  page: z.coerce.number().min(1).max(1000).default(1),
+  limit: z.coerce.number().min(1).max(100).default(15), // cap at 100, was unlimited
 })
 
 export async function getMessages(req: Request, res: Response) {

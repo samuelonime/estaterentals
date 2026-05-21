@@ -95,11 +95,26 @@ export async function getPropertyBySlug(req: Request, res: Response) {
     return res.status(404).json({ success: false, error: 'Property not found' })
   }
 
-  // Increment view count
-  await prisma.property.update({
-    where: { id: property.id },
-    data: { viewCount: { increment: 1 } },
-  })
+  // ── Deduplicated view count ───────────────────────────
+  // Only increment once per property per browser session using a cookie.
+  // Prevents bots inflating counts with rapid repeated requests.
+  const viewedCookieName = `viewed_${property.id}`
+  const alreadyViewed = req.cookies?.[viewedCookieName]
+
+  if (!alreadyViewed) {
+    // Fire and forget — don't slow the response for a view count
+    prisma.property.update({
+      where: { id: property.id },
+      data: { viewCount: { increment: 1 } },
+    }).catch(() => {})
+
+    res.cookie(viewedCookieName, '1', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      // No maxAge = session cookie, cleared when browser closes
+    })
+  }
 
   return res.status(200).json(buildResponse(property))
 }

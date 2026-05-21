@@ -10,14 +10,33 @@ export interface AuthUser {
   image?: string | null
 }
 
+// Secure cookie options — httpOnly must be set server-side, but we add
+// secure + sameSite here for the js-cookie layer.
+// For true httpOnly, tokens should be set via Set-Cookie on the server.
+// This is the best we can do from client-side js-cookie.
+const COOKIE_OPTIONS: Cookies.CookieAttributes = {
+  sameSite: 'strict',
+  secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
+}
+
+const ACCESS_OPTS: Cookies.CookieAttributes  = { ...COOKIE_OPTIONS, expires: 7 }
+const REFRESH_OPTS: Cookies.CookieAttributes = { ...COOKIE_OPTIONS, expires: 30 }
+
+function setTokens(accessToken: string, refreshToken: string) {
+  Cookies.set('accessToken', accessToken, ACCESS_OPTS)
+  Cookies.set('refreshToken', refreshToken, REFRESH_OPTS)
+}
+
+function clearTokens() {
+  Cookies.remove('accessToken')
+  Cookies.remove('refreshToken')
+}
+
 // ─── Admin Login ───────────────────────────────────────
 export async function login(email: string, password: string): Promise<AuthUser> {
   const res = await authApi.login(email, password)
   const { accessToken, refreshToken, user } = res.data.data
-
-  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
-  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
-
+  setTokens(accessToken, refreshToken)
   return user
 }
 
@@ -25,10 +44,7 @@ export async function login(email: string, password: string): Promise<AuthUser> 
 export async function visitorLogin(email: string, password: string): Promise<AuthUser> {
   const res = await authApi.visitorLogin(email, password)
   const { accessToken, refreshToken, user } = res.data.data
-
-  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
-  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
-
+  setTokens(accessToken, refreshToken)
   return user
 }
 
@@ -36,10 +52,7 @@ export async function visitorLogin(email: string, password: string): Promise<Aut
 export async function visitorRegister(name: string, email: string, password: string): Promise<AuthUser> {
   const res = await authApi.visitorRegister(name, email, password)
   const { accessToken, refreshToken, user } = res.data.data
-
-  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
-  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
-
+  setTokens(accessToken, refreshToken)
   return user
 }
 
@@ -47,23 +60,18 @@ export async function visitorRegister(name: string, email: string, password: str
 export async function googleSignIn(idToken: string): Promise<AuthUser> {
   const res = await authApi.googleAuth(idToken)
   const { accessToken, refreshToken, user } = res.data.data
-
-  Cookies.set('accessToken', accessToken, { expires: 7, sameSite: 'strict' })
-  Cookies.set('refreshToken', refreshToken, { expires: 30, sameSite: 'strict' })
-
+  setTokens(accessToken, refreshToken)
   return user
 }
 
 // ─── Logout ────────────────────────────────────────────
 export function logout() {
-  Cookies.remove('accessToken')
-  Cookies.remove('refreshToken')
+  clearTokens()
   window.location.href = '/'
 }
 
 export function adminLogout() {
-  Cookies.remove('accessToken')
-  Cookies.remove('refreshToken')
+  clearTokens()
   window.location.href = '/admin/login'
 }
 
