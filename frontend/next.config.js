@@ -10,7 +10,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const cspDirectives = [
   "default-src 'self'",
   // 'unsafe-inline' needed for Next.js hydration scripts + Tailwind inline styles
-  "script-src 'self' 'unsafe-inline' https://accounts.google.com",
+  "script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://www.gstatic.com",
   "style-src 'self' 'unsafe-inline'",
   [
     "img-src 'self' data: blob:",
@@ -25,8 +25,9 @@ const cspDirectives = [
     (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000').replace(/\/api$/, ''),
     "https://accounts.google.com",
     "https://oauth2.googleapis.com",
+    "https://www.googleapis.com",
   ].join(' '),
-  "frame-src https://maps.google.com https://www.google.com",
+  "frame-src https://maps.google.com https://www.google.com https://accounts.google.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
