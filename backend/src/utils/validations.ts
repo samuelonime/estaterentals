@@ -19,6 +19,7 @@ export const PropertySchema = z.object({
   status: z.enum(['ACTIVE', 'INACTIVE', 'RENTED']).default('ACTIVE'),
   bedrooms: z.coerce.number().min(0).max(20),
   bathrooms: z.coerce.number().min(0).max(20),
+  listingType: z.enum(['RENT', 'SALE']).default('RENT'),
   area: z.coerce.number().positive().optional(),
   latitude: z.coerce.number().optional(),
   longitude: z.coerce.number().optional(),
@@ -63,4 +64,5 @@ export const PropertyFilterSchema = z.object({
   status: z.string().optional(),
   page: z.coerce.number().default(1),
   limit: z.coerce.number().default(9),
+  listingType: z.string().optional(),
 })

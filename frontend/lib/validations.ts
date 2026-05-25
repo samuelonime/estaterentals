@@ -30,6 +30,9 @@ export const PropertySchema = z.object({
   bathrooms: z.coerce.number().min(0).max(20),
   area: z.coerce.number().positive().optional(),
   featured: z.boolean().default(false),
+  latitude: z.coerce.number().optional(),
+  longitude: z.coerce.number().optional(),
+  listingType: z.enum(['RENT', 'SALE']).default('RENT'),
 })
 
 export type LoginFormData = z.infer<typeof LoginSchema>

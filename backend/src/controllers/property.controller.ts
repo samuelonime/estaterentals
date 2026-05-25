@@ -13,7 +13,8 @@ export async function getProperties(req: Request, res: Response) {
 
   if (filters.status) where.status = filters.status
   else where.status = 'ACTIVE' // Public default
-
+  
+  if (filters.listingType) where.listingType = filters.listingType
   if (filters.type) where.type = filters.type
   if (filters.city) where.city = { contains: filters.city }
   if (filters.featured !== undefined) where.featured = filters.featured
@@ -61,7 +62,7 @@ export async function getAdminProperties(req: Request, res: Response) {
   if (filters.type) where.type = filters.type
   if (filters.search) {
     where.OR = [
-      { title: { contains: filters.search } },
+      { title: { contains: filters.search, mode: 'insensitive' } }
       { city: { contains: filters.search } },
       { location: { contains: filters.search } },
     ]
