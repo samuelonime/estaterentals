@@ -1,5 +1,6 @@
 'use client'
 
+import 'leaflet/dist/leaflet.css' // Add CSS import at top
 import { useEffect, useRef } from 'react'
 import { ExternalLink, Navigation } from 'lucide-react'
 
@@ -20,10 +21,8 @@ export function PropertyMap({ latitude, longitude, title, address }: PropertyMap
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
-    // Dynamically import leaflet to avoid SSR issues
     const initMap = async () => {
       const L = (await import('leaflet')).default
-      await import('leaflet/dist/leaflet.css')
 
       // Fix default marker icon paths broken by webpack
       delete (L.Icon.Default.prototype as any)._getIconUrl
