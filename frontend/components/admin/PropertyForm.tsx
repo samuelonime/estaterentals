@@ -3,13 +3,13 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PropertySchema, type PropertyFormData } from '@/lib/validations'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { propertyApi, uploadApi } from '@/lib/api'
 import {
   Upload, X, Plus, CheckCircle, AlertCircle,
-  Loader2, ImagePlus, Copy, ExternalLink,
+  Loader2, ImagePlus, Copy, ExternalLink, MapPin,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -50,7 +50,34 @@ export function PropertyForm({ property }: { property?: any }) {
   const [submitted, setSubmitted] = useState(false)
   const [savedSlug, setSavedSlug] = useState<string | null>(null)
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PropertyFormData>({
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
+    property?.latitude && property?.longitude
+      ? { lat: property.latitude, lng: property.longitude }
+      : null
+  )
+  const [geocoding, setGeocoding] = useState(false)
+
+  const geocode = useCallback(async (address: string, city: string, state: string) => {
+    const query = [address, city, state, 'Nigeria'].filter(Boolean).join(', ')
+    if (query.replace(/,/g, '').trim().length < 5) return
+    setGeocoding(true)
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`,
+        { headers: { 'Accept-Language': 'en' } }
+      )
+      const data = await res.json()
+      if (data[0]) {
+        setCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) })
+      }
+    } catch (e) {
+      console.error('Geocode failed', e)
+    } finally {
+      setGeocoding(false)
+    }
+  }, [])
+
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<PropertyFormData>({
     resolver: zodResolver(PropertySchema),
     defaultValues: property
       ? {
@@ -71,6 +98,19 @@ export function PropertyForm({ property }: { property?: any }) {
         }
       : { priceUnit: 'MONTH', status: 'ACTIVE', bedrooms: 1, bathrooms: 1, featured: false },
   })
+
+  const watchedAddress = watch('address')
+  const watchedCity = watch('city')
+  const watchedState = watch('state')
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (watchedAddress && watchedCity && watchedState) {
+        geocode(watchedAddress, watchedCity, watchedState)
+      }
+    }, 1200)
+    return () => clearTimeout(timer)
+  }, [watchedAddress, watchedCity, watchedState, geocode])
 
   const uploadImages = async (files: FileList) => {
     const remaining = MAX_IMAGES - images.length
@@ -114,7 +154,7 @@ export function PropertyForm({ property }: { property?: any }) {
 
   const onSubmit = async (data: PropertyFormData) => {
     setSubmitError('')
-    const payload = { ...data, images, amenities: amenitiesList }
+    const payload = { ...data, images, amenities: amenitiesList, latitude: coords?.lat, longitude: coords?.lng }
     try {
       let res
       if (isEditing) {
@@ -391,6 +431,33 @@ export function PropertyForm({ property }: { property?: any }) {
               )}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── Map Coordinates (auto-detected) ───────────────── */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-6">
+        <h2 className="font-display font-semibold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-orange-500" />
+          Map Coordinates
+        </h2>
+        <p className="text-slate-400 text-xs mb-4">
+          Automatically detected from the address. No action needed.
+        </p>
+        <div className={cn(
+          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm",
+          geocoding
+            ? "bg-orange-50 dark:bg-orange-950/30 text-orange-600"
+            : coords
+            ? "bg-green-50 dark:bg-green-950/30 text-green-600"
+            : "bg-slate-50 dark:bg-slate-800 text-slate-400"
+        )}>
+          {geocoding ? (
+            <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Detecting location from address...</>
+          ) : coords ? (
+            <><CheckCircle className="w-4 h-4 shrink-0" /> Location detected — Lat: {coords.lat.toFixed(5)}, Lng: {coords.lng.toFixed(5)}</>
+          ) : (
+            <><MapPin className="w-4 h-4 shrink-0" /> Fill in the address above to auto-detect coordinates</>
+          )}
         </div>
       </div>
 

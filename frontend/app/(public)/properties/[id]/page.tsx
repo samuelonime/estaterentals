@@ -8,6 +8,7 @@ import { propertyApi } from '@/lib/api'
 import { formatPrice, getPropertyTypeLabel } from '@/lib/utils'
 import { ContactPropertyForm } from '@/components/property/ContactPropertyForm'
 import { PropertyGallery } from '@/components/property/PropertyGallery'
+import { PropertyMap } from '@/components/property/PropertyMap'
 import { Bed, Bath, Maximize, MapPin, CheckCircle, Phone, MessageCircle, Calendar } from 'lucide-react'
 
 export default function PropertyDetailPage() {
@@ -131,14 +132,23 @@ export default function PropertyDetailPage() {
             {/* Map */}
             <div>
               <h2 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-4">Location</h2>
-              <div className="rounded-2xl overflow-hidden h-72 bg-slate-100 dark:bg-slate-900">
-                <iframe
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.address}, ${property.city}, Nigeria`)}&output=embed`}
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  title="Property Location"
+              {property.latitude && property.longitude ? (
+                <PropertyMap
+                  latitude={property.latitude}
+                  longitude={property.longitude}
+                  title={property.title}
+                  address={`${property.address}, ${property.city}`}
                 />
-              </div>
+              ) : (
+                <div className="rounded-2xl overflow-hidden h-72 bg-slate-100 dark:bg-slate-900">
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.address}, ${property.city}, Nigeria`)}&output=embed`}
+                    className="w-full h-full border-0"
+                    loading="lazy"
+                    title="Property Location"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
